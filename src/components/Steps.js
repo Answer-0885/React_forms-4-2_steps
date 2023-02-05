@@ -18,25 +18,22 @@ const Steps = () => {
 
   // Сортируем наш список в зависимости от даты
   const sortSteps = () => {
-    if (!steps) {
-      return null
-    }
-    setSteps(prev => prev.sort((a, b) => {
-      if (a.date.split("-")[2] === b.date.split("-")[2]) {
-        if (a.date.split("-")[1] === b.date.split("-")[1]) {
-          if (a.date.split("-")[0] > b.date.split("-")[0]) {
-            return -1;
-          }
-        }
-        if (a.date.split("-")[1] > b.date.split("-")[1]) {
-          return -1;
-        }
-      }
-      if (a.date.split("-")[2] > b.date.split("-")[2]) {
-        return -1;
-      }
-    }));
+    if (!steps) return null;
+  
+    setSteps(prev =>
+      prev.sort((a, b) => {
+        const [aDay, aMonth, aYear] = a.date.split("-");
+        const [bDay, bMonth, bYear] = b.date.split("-");
+  
+        if (aYear !== bYear) return aYear > bYear ? -1 : 1;
+        if (aMonth !== bMonth) return aMonth > bMonth ? -1 : 1;
+        if (aDay !== bDay) return aDay > bDay ? -1 : 1;
+  
+        return 0;
+      })
+    );
   };
+  
 
   // Редактируем выбранный элемент списка путём его удаления из steps и переноса данных в инпуты для корректировки
   const editStep = (id) => {
